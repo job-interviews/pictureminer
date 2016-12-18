@@ -45,6 +45,7 @@ dependencies {
 
     compile 'com.android.support:appcompat-v7:25.1.0'
     compile 'com.android.support:design:25.1.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     provided 'org.glassfish:javax.annotation:10.0-b28'
     compile "com.google.dagger:dagger:2.8"
