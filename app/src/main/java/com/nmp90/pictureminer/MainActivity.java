@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
-    public void displayPictureInSystem(File file) {
+    public void openSystemGallery(File file) {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_VIEW);
         intent.setDataAndType(FileUtils.getImageContentUri(this, file), "image/*");
@@ -100,6 +101,18 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void savePictureFailed() {
         Snackbar.make(binding.activityMain, R.string.picture_save_failed, Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void sharePicture(File file) {
+        Uri imageUri = FileUtils.getImageContentUri(this, file);
+        Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+        emailIntent.setType("application/image");
+        emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, new String[]{});
+        emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"");
+        emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, "");
+        emailIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+        startActivity(Intent.createChooser(emailIntent, getString(R.string.send_email)));
     }
 
     @Override

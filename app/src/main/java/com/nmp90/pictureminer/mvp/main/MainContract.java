@@ -15,8 +15,10 @@ public interface MainContract {
     interface View extends BaseContract.BaseView {
         void displayPictures(List<Picture> pictures);
 
-        void displayPictureInSystem(File file);
+        void openSystemGallery(File file);
         void savePictureFailed();
+
+        void sharePicture(File file);
     }
 
     interface Presenter extends BaseContract.BasePresenter {

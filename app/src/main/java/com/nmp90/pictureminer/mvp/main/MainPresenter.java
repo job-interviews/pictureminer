@@ -67,26 +67,45 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
     }
 
     public void savePicture(Picture picture) {
+        savePictureLocally(picture, new OnPictureSavedListener() {
+            @Override
+            public void onPictureSaved(File file) {
+                if (viewExists()) {
+                    getView().openSystemGallery(file);
+                }
+            }
+
+            @Override
+            public void onPictureSaveFailed() {
+                if (viewExists()) {
+                    getView().savePictureFailed();
+                }
+            }
+        });
+    }
+
+    private void savePictureLocally(Picture picture, OnPictureSavedListener pictureSavedListener) {
         Picasso.with(context)
                 .load(picture.getMedia().getLink())
-                .into(new TargetPhoneGallery(new OnPictureSavedListener() {
-                    @Override
-                    public void onPictureSaved(File file) {
-                        if (viewExists()) {
-                            getView().displayPictureInSystem(file);
-                        }
-                    }
-
-                    @Override
-                    public void onPictureSaveFailed() {
-                        if (viewExists()) {
-                            getView().savePictureFailed();
-                        }
-                    }
-                }));
+                .into(new TargetPhoneGallery(pictureSavedListener));
     }
 
     public void sharePicture(Picture picture) {
+        savePictureLocally(picture, new OnPictureSavedListener() {
 
+            @Override
+            public void onPictureSaved(File file) {
+                if (viewExists()) {
+                    getView().sharePicture(file);
+                }
+            }
+
+            @Override
+            public void onPictureSaveFailed() {
+                if (viewExists()) {
+                    getView().savePictureFailed();
+                }
+            }
+        });
     }
 }
