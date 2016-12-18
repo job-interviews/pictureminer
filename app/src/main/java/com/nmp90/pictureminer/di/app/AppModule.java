@@ -2,6 +2,8 @@ package com.nmp90.pictureminer.di.app;
 
 import android.content.Context;
 
+import com.nmp90.pictureminer.api.transformer.RxTransformer;
+import com.nmp90.pictureminer.api.transformer.Transformer;
 import com.nmp90.pictureminer.utils.Constants;
 import com.nmp90.pictureminer.api.Api;
 import com.nmp90.pictureminer.api.FlickrApi;
@@ -25,20 +27,26 @@ public class AppModule {
     }
 
     @Provides
-    Context provideContext() {
+    public Context provideContext() {
         return context;
     }
 
     @Provides
     @Singleton
-    Api provideApi() {
+    public Api provideApi() {
         return FlickrApi.createApi();
     }
 
     @Provides
     @Singleton
+    public RxTransformer providesTransformer() {
+        return new Transformer();
+    }
+
+    @Provides
+    @Singleton
     @Named(Constants.DATA_FORMAT)
-    String providesDataFormat() {
+    public String providesDataFormat() {
         return "json";
     }
 }

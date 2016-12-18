@@ -18,6 +18,12 @@ public class PicturesResponse {
     public PicturesResponse() {
     }
 
+    public PicturesResponse(String title, String link, List<Picture> items) {
+        this.title = title;
+        this.link = link;
+        this.items = items;
+    }
+
     public String getTitle() {
         return title;
     }

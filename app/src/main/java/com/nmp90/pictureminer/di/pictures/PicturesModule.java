@@ -3,6 +3,7 @@ package com.nmp90.pictureminer.di.pictures;
 import android.content.Context;
 
 import com.nmp90.pictureminer.api.Api;
+import com.nmp90.pictureminer.api.transformer.Transformer;
 import com.nmp90.pictureminer.mvp.main.MainContract;
 import com.nmp90.pictureminer.mvp.main.MainPresenter;
 
@@ -26,7 +27,7 @@ public class PicturesModule {
     }
 
     @Provides
-    public MainContract.Presenter providesPresenter(Context context, Api api) {
-        return new MainPresenter(view, api, context);
+    public MainContract.Presenter providesPresenter(Context context, Api api, Transformer transformer) {
+        return new MainPresenter(view, api, context, transformer);
     }
 }

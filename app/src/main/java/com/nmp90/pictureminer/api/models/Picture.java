@@ -26,6 +26,16 @@ public class Picture {
     public Picture() {
     }
 
+    public Picture(String title, String description, String link, Media media, Date dateTaken, Date datePublished, String author) {
+        this.title = title;
+        this.description = description;
+        this.link = link;
+        this.media = media;
+        this.dateTaken = dateTaken;
+        this.datePublished = datePublished;
+        this.author = author;
+    }
+
     public String getTitle() {
         return title;
     }

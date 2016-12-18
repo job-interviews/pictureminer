@@ -5,6 +5,7 @@ import android.content.Context;
 import com.nmp90.pictureminer.api.Api;
 import com.nmp90.pictureminer.api.models.Picture;
 import com.nmp90.pictureminer.api.models.PictureOrder;
+import com.nmp90.pictureminer.api.transformer.RxTransformer;
 import com.nmp90.pictureminer.mvp.base.BasePresenter;
 import com.nmp90.pictureminer.utils.Constants;
 import com.nmp90.pictureminer.utils.pictures.OnPictureSavedListener;
@@ -21,9 +22,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
 
 /**
@@ -34,24 +33,25 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
 
     private final Api api;
     private final Context context;
+    private final RxTransformer transformer;
 
     @Inject
     @Named(Constants.DATA_FORMAT)
     String dataFormat;
 
     @Inject
-    public MainPresenter(MainContract.View view, Api api, Context context) {
+    public MainPresenter(MainContract.View view, Api api, Context context, RxTransformer transformer) {
         super(view);
         this.api = api;
         this.context = context;
+        this.transformer = transformer;
     }
 
     @Override
     public void getPictures(ArrayList<String> tags, @PictureOrder int pictureOrder) {
         disposables.add(
                 api.getPictures(dataFormat, tags)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
+                        .compose(transformer.applyIoSchedulers())
                         .subscribe(pictureResponse -> {
                             List<Picture> items = pictureResponse.getItems();
                             Collections.sort(items, new Comparator<Picture>() {
