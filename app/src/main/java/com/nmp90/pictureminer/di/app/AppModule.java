@@ -2,7 +2,7 @@ package com.nmp90.pictureminer.di.app;
 
 import android.content.Context;
 
-import com.nmp90.pictureminer.Constants;
+import com.nmp90.pictureminer.utils.Constants;
 import com.nmp90.pictureminer.api.Api;
 import com.nmp90.pictureminer.api.FlickrApi;
 

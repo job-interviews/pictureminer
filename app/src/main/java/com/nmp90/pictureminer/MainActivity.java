@@ -1,6 +1,7 @@
 package com.nmp90.pictureminer;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -18,7 +19,9 @@ import com.nmp90.pictureminer.di.pictures.PicturesModule;
 import com.nmp90.pictureminer.mvp.main.MainContract;
 import com.nmp90.pictureminer.mvp.main.MainPresenter;
 import com.nmp90.pictureminer.ui.adapters.PicturesAdapter;
+import com.nmp90.pictureminer.utils.FileUtils;
 
+import java.io.File;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -84,6 +87,19 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
                             MainActivityPermissionsDispatcher.sharePictureWithCheck(this, picture);
                         }));
         binding.rvPictures.setAdapter(adapter);
+    }
+
+    @Override
+    public void displayPictureInSystem(File file) {
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.setDataAndType(FileUtils.getImageContentUri(this, file), "image/*");
+        startActivity(intent);
+    }
+
+    @Override
+    public void savePictureFailed() {
+        Snackbar.make(binding.activityMain, R.string.picture_save_failed, Snackbar.LENGTH_SHORT).show();
     }
 
     @Override

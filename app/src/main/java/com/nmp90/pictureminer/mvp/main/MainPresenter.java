@@ -1,10 +1,16 @@
 package com.nmp90.pictureminer.mvp.main;
 
-import com.nmp90.pictureminer.Constants;
+import android.content.Context;
+
 import com.nmp90.pictureminer.api.Api;
 import com.nmp90.pictureminer.api.models.Picture;
 import com.nmp90.pictureminer.mvp.base.BasePresenter;
+import com.nmp90.pictureminer.utils.Constants;
+import com.nmp90.pictureminer.utils.pictures.OnPictureSavedListener;
+import com.nmp90.pictureminer.utils.pictures.TargetPhoneGallery;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.inject.Inject;
@@ -22,15 +28,17 @@ import timber.log.Timber;
 public class MainPresenter extends BasePresenter<MainContract.View> implements MainContract.Presenter {
 
     private final Api api;
+    private final Context context;
 
     @Inject
     @Named(Constants.DATA_FORMAT)
     String dataFormat;
 
     @Inject
-    public MainPresenter(MainContract.View view, Api api) {
+    public MainPresenter(MainContract.View view, Api api, Context context) {
         super(view);
         this.api = api;
+        this.context = context;
     }
 
     @Override
@@ -59,11 +67,26 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
     }
 
     public void savePicture(Picture picture) {
+        Picasso.with(context)
+                .load(picture.getMedia().getLink())
+                .into(new TargetPhoneGallery(new OnPictureSavedListener() {
+                    @Override
+                    public void onPictureSaved(File file) {
+                        if (viewExists()) {
+                            getView().displayPictureInSystem(file);
+                        }
+                    }
 
+                    @Override
+                    public void onPictureSaveFailed() {
+                        if (viewExists()) {
+                            getView().savePictureFailed();
+                        }
+                    }
+                }));
     }
 
     public void sharePicture(Picture picture) {
-
 
     }
 }

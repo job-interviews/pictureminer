@@ -1,4 +1,4 @@
-package com.nmp90.pictureminer;
+package com.nmp90.pictureminer.utils;
 
 /**
  * Created by joro on 18.12.16.

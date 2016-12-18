@@ -27,6 +27,6 @@ public class PicturesModule {
 
     @Provides
     public MainContract.Presenter providesPresenter(Context context, Api api) {
-        return new MainPresenter(view, api);
+        return new MainPresenter(view, api, context);
     }
 }

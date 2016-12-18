@@ -3,7 +3,7 @@ package com.nmp90.pictureminer.api;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import com.nmp90.pictureminer.Constants;
+import com.nmp90.pictureminer.utils.Constants;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
