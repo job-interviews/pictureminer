@@ -18,6 +18,9 @@ public class Picture {
     @JsonProperty("date_taken")
     private Date dateTaken;
 
+    @JsonProperty("published")
+    private Date datePublished;
+
     private String author;
 
     public Picture() {
@@ -37,6 +40,10 @@ public class Picture {
 
     public Date getDateTaken() {
         return dateTaken;
+    }
+
+    public Date getDatePublished() {
+        return datePublished;
     }
 
     public String getAuthor() {

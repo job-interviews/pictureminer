@@ -37,7 +37,7 @@
                 android:layout_height="match_parent">
 
                 <FrameLayout
-                    android:layout_above="@+id/container_date"
+                    android:layout_above="@+id/container_date_published"
                     android:layout_marginTop="8dp"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true"
@@ -67,11 +67,11 @@
                 </FrameLayout>
 
                 <LinearLayout
-                    android:id="@+id/container_date"
+                    android:id="@+id/container_date_published"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
                     android:layout_marginBottom="8dp"
-                    android:layout_above="@+id/divider"
+                    android:layout_above="@+id/container_date_taken"
                     android:orientation="horizontal"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
@@ -85,6 +85,34 @@
                     <TextView
                         style="@style/TextAppearance.AppCompat.Body1"
                         android:id="@+id/tv_description"
+                        android:text="@{DateUtils.getReadableDate(picture.getDatePublished())}"
+                        android:maxLines="3"
+                        android:layout_marginLeft="8dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/container_date_taken"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_above="@+id/divider"
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:text="@string/picture_taken"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        style="@style/TextAppearance.AppCompat.Body1"
+                        android:id="@+id/tv_taken"
                         android:text="@{DateUtils.getReadableDate(picture.getDateTaken())}"
                         android:maxLines="3"
                         android:layout_marginLeft="8dp"

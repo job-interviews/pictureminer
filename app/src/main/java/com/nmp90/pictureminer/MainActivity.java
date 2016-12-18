@@ -15,6 +15,7 @@ import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.widget.Toast;
 
 import com.nmp90.pictureminer.api.models.Picture;
+import com.nmp90.pictureminer.api.models.PictureOrder;
 import com.nmp90.pictureminer.databinding.ActivityMainBinding;
 import com.nmp90.pictureminer.di.pictures.PicturesModule;
 import com.nmp90.pictureminer.mvp.main.MainContract;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
 
         FlickrApplication.getApplicationComponent().plus(new PicturesModule(this)).inject(this);
         presenter.start();
-        presenter.getPictures(null);
+        presenter.getPictures(null, PictureOrder.DATE_TAKEN);
     }
 
     @Override

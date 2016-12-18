@@ -1,6 +1,7 @@
 package com.nmp90.pictureminer.mvp.main;
 
 import com.nmp90.pictureminer.api.models.Picture;
+import com.nmp90.pictureminer.api.models.PictureOrder;
 import com.nmp90.pictureminer.mvp.base.BaseContract;
 
 import java.io.File;
@@ -22,6 +23,6 @@ public interface MainContract {
     }
 
     interface Presenter extends BaseContract.BasePresenter {
-        void getPictures(ArrayList<String> tags);
+        void getPictures(ArrayList<String> tags, @PictureOrder int pictureOrder);
     }
 }

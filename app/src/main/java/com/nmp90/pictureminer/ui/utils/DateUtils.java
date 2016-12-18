@@ -15,9 +15,9 @@ public class DateUtils {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         if(calendar.get(Calendar.YEAR) == Calendar.getInstance().get(Calendar.YEAR)) {
-            datePattern = "MMMM dd, yyyy";
+            datePattern = "MMMM dd, HH:mm";
         } else {
-            datePattern = "MMMM dd, yyyy";
+            datePattern = "MMMM dd HH:mm, yyyy";
         }
         return new SimpleDateFormat(datePattern, Locale.getDefault()).format(date);
     }

@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.nmp90.pictureminer.api.Api;
 import com.nmp90.pictureminer.api.models.Picture;
+import com.nmp90.pictureminer.api.models.PictureOrder;
 import com.nmp90.pictureminer.mvp.base.BasePresenter;
 import com.nmp90.pictureminer.utils.Constants;
 import com.nmp90.pictureminer.utils.pictures.OnPictureSavedListener;
@@ -12,6 +13,10 @@ import com.squareup.picasso.Picasso;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -42,14 +47,36 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
     }
 
     @Override
-    public void getPictures(ArrayList<String> tags) {
+    public void getPictures(ArrayList<String> tags, @PictureOrder int pictureOrder) {
         disposables.add(
                 api.getPictures(dataFormat, tags)
                         .subscribeOn(Schedulers.io())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(pictureResponse -> {
+                            List<Picture> items = pictureResponse.getItems();
+                            Collections.sort(items, new Comparator<Picture>() {
+                                @Override
+                                public int compare(Picture picture, Picture t1) {
+                                    if (pictureOrder == PictureOrder.DATE_PUBLISHED) {
+                                        return compareDates(picture.getDatePublished(), t1.getDatePublished());
+                                    } else {
+                                        return compareDates(picture.getDateTaken(), t1.getDateTaken());
+                                    }
+
+                                }
+
+                                private int compareDates(Date dateTaken, Date dateTaken1) {
+                                    if (dateTaken.before(dateTaken1)) {
+                                        return 1;
+                                    } else if (dateTaken.after(dateTaken1)) {
+                                        return -1;
+                                    } else {
+                                        return 0;
+                                    }
+                                }
+                            });
                             if (viewExists()) {
-                                getView().displayPictures(pictureResponse.getItems());
+                                getView().displayPictures(items);
                             }
                         }, error -> {
                             Timber.e(error);
