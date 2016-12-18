@@ -13,6 +13,7 @@ import java.util.Date;
 public class Picture {
     private String title, description;
     private String link;
+    private Media media;
 
     @JsonProperty("date_taken")
     private Date dateTaken;
@@ -40,5 +41,9 @@ public class Picture {
 
     public String getAuthor() {
         return author;
+    }
+
+    public Media getMedia() {
+        return media;
     }
 }
