@@ -2,6 +2,7 @@ package com.nmp90.pictureminer.mvp.main;
 
 import com.nmp90.pictureminer.Constants;
 import com.nmp90.pictureminer.api.Api;
+import com.nmp90.pictureminer.api.models.Picture;
 import com.nmp90.pictureminer.mvp.base.BasePresenter;
 
 import java.util.ArrayList;
@@ -55,5 +56,14 @@ public class MainPresenter extends BasePresenter<MainContract.View> implements M
     @Override
     public void stop() {
         disposables.dispose();
+    }
+
+    public void savePicture(Picture picture) {
+
+    }
+
+    public void sharePicture(Picture picture) {
+
+
     }
 }

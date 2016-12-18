@@ -1,8 +1,12 @@
 package com.nmp90.pictureminer;
 
+import android.Manifest;
 import android.content.res.Configuration;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -19,15 +23,22 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import io.reactivex.disposables.Disposable;
+import io.reactivex.disposables.CompositeDisposable;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.OnNeverAskAgain;
+import permissions.dispatcher.OnPermissionDenied;
+import permissions.dispatcher.OnShowRationale;
+import permissions.dispatcher.PermissionRequest;
+import permissions.dispatcher.RuntimePermissions;
 
+@RuntimePermissions
 public class MainActivity extends AppCompatActivity implements MainContract.View {
 
     @Inject
     MainPresenter presenter;
 
     private ActivityMainBinding binding;
-    private Disposable subscription;
+    private CompositeDisposable subscription = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,17 +64,59 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     }
 
     @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
+
+    @Override
     public void displayPictures(List<Picture> pictures) {
         PicturesAdapter adapter = new PicturesAdapter(pictures);
-        subscription = adapter.getClickObservable()
-                .subscribe(picture -> {
-                    Toast.makeText(this, "" + picture.getTitle(), Toast.LENGTH_SHORT).show();
-                });
+        subscription.add(
+                adapter.getSaveListener()
+                        .subscribe(picture -> {
+                            MainActivityPermissionsDispatcher.savePictureWithCheck(this, picture);
+                        }));
+
+        subscription.add(
+                adapter.getShareListener()
+                        .subscribe(picture -> {
+                            MainActivityPermissionsDispatcher.sharePictureWithCheck(this, picture);
+                        }));
         binding.rvPictures.setAdapter(adapter);
     }
 
     @Override
     public boolean isActive() {
         return !isFinishing();
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    public void savePicture(Picture picture) {
+        presenter.savePicture(picture);
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    public void sharePicture(Picture picture) {
+        presenter.sharePicture(picture);
+    }
+
+    @OnShowRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showRationaleForStorage(final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setMessage(R.string.permission_external_storage)
+                .setPositiveButton(R.string.button_allow, (dialog, button) -> request.proceed())
+                .setNegativeButton(R.string.button_deny, (dialog, button) -> request.cancel())
+                .show();
+    }
+
+    @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showDeniedForStorage() {
+        Snackbar.make(binding.activityMain, R.string.permission_external_storage, Snackbar.LENGTH_SHORT ).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void showNeverAskForStorage() {
+        Snackbar.make(binding.activityMain, R.string.permission_storage_neverask, Toast.LENGTH_SHORT).show();
     }
 }

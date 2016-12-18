@@ -3,4 +3,8 @@
     <string name="picture_save">Save</string>
     <string name="picture_share">Share</string>
     <string name="picture_published">Published:</string>
+    <string name="permission_external_storage">We need this permission to store or share the image!</string>
+    <string name="permission_storage_neverask">You cannot save or share images!</string>
+    <string name="button_allow">Allow</string>
+    <string name="button_deny">Deny</string>
 </resources>

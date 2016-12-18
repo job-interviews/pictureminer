@@ -18,11 +18,13 @@ import io.reactivex.subjects.PublishSubject;
 
 public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHolder> {
     private final List<Picture> pictures;
-    private PublishSubject<Picture> onClickListener;
+    private PublishSubject<Picture> onSaveListener;
+    private PublishSubject<Picture> onShareListener;
 
     public PicturesAdapter(List<Picture> pictures) {
         this.pictures = pictures;
-        onClickListener = PublishSubject.create();
+        onShareListener = PublishSubject.create();
+        onSaveListener = PublishSubject.create();
     }
 
     @Override
@@ -30,8 +32,12 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHo
         ItemPictureBinding binding = ItemPictureBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         ViewHolder viewHolder = new ViewHolder(binding);
 
-        binding.ivPicture.setOnClickListener(view -> {
-            onClickListener.onNext(pictures.get(viewHolder.getAdapterPosition()));
+        binding.tvSave.setOnClickListener(view -> {
+            onSaveListener.onNext(pictures.get(viewHolder.getAdapterPosition()));
+        });
+
+        binding.tvShare.setOnClickListener(view -> {
+            onShareListener.onNext(pictures.get(viewHolder.getAdapterPosition()));
         });
 
         return viewHolder;
@@ -47,8 +53,12 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHo
         return pictures.size();
     }
 
-    public Observable<Picture> getClickObservable() {
-        return onClickListener;
+    public Observable<Picture> getSaveListener() {
+        return onSaveListener;
+    }
+
+    public Observable<Picture> getShareListener() {
+        return onShareListener;
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
