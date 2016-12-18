@@ -12,6 +12,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
 import com.nmp90.pictureminer.api.models.Picture;
@@ -24,6 +27,7 @@ import com.nmp90.pictureminer.ui.adapters.PicturesAdapter;
 import com.nmp90.pictureminer.utils.FileUtils;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -51,15 +55,37 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         setSupportActionBar(binding.toolbar);
 
+        FlickrApplication.getApplicationComponent().plus(new PicturesModule(this)).inject(this);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                R.layout.item_spinner, new ArrayList<String>() {{
+            add(getString(R.string.date_taken));
+            add(getString(R.string.date_published));
+        }});
+
+        binding.spinnerOrder.setAdapter(adapter);
+        binding.spinnerOrder.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) {
+                    presenter.getPictures(null, PictureOrder.DATE_TAKEN);
+                } else {
+                    presenter.getPictures(null, PictureOrder.DATE_PUBLISHED);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             binding.rvPictures.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         } else {
             binding.rvPictures.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         }
-
-        FlickrApplication.getApplicationComponent().plus(new PicturesModule(this)).inject(this);
+        
         presenter.start();
-        presenter.getPictures(null, PictureOrder.DATE_TAKEN);
     }
 
     @Override

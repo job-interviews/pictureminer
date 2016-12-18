@@ -10,4 +10,6 @@
     <string name="picture_save_failed">Saving the picture failed. Please try again.</string>
     <string name="send_email">Send email</string>
     <string name="picture_taken">Taken</string>
+    <string name="date_published">Date Published</string>
+    <string name="date_taken">Date Taken</string>
 </resources>
