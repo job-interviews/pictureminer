@@ -28,8 +28,13 @@ public class PicturesAdapter extends RecyclerView.Adapter<PicturesAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ItemPictureBinding binding = ItemPictureBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
+        ViewHolder viewHolder = new ViewHolder(binding);
 
-        return new ViewHolder(binding);
+        binding.ivPicture.setOnClickListener(view -> {
+            onClickListener.onNext(pictures.get(viewHolder.getAdapterPosition()));
+        });
+
+        return viewHolder;
     }
 
     @Override

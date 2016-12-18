@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">PictureMiner</string>
+    <string name="picture_save">Save</string>
+    <string name="picture_share">Share</string>
+    <string name="picture_published">Published:</string>
 </resources>
