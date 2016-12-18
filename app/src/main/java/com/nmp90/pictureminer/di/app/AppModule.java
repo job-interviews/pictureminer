@@ -2,9 +2,11 @@ package com.nmp90.pictureminer.di.app;
 
 import android.content.Context;
 
+import com.nmp90.pictureminer.Constants;
 import com.nmp90.pictureminer.api.Api;
 import com.nmp90.pictureminer.api.FlickrApi;
 
+import javax.inject.Named;
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -31,5 +33,12 @@ public class AppModule {
     @Singleton
     Api provideApi() {
         return FlickrApi.createApi();
+    }
+
+    @Provides
+    @Singleton
+    @Named(Constants.DATA_FORMAT)
+    String providesDataFormat() {
+        return "json";
     }
 }
