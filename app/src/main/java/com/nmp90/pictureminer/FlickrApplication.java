@@ -3,6 +3,7 @@ package com.nmp90.pictureminer;
 import android.app.Application;
 
 import com.nmp90.pictureminer.di.app.AppComponent;
+import com.nmp90.pictureminer.di.app.AppModule;
 import com.nmp90.pictureminer.di.app.DaggerAppComponent;
 import com.nmp90.pictureminer.logger.TimberCrashReportingTree;
 import com.squareup.leakcanary.LeakCanary;
@@ -21,7 +22,7 @@ public class FlickrApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        applicationComponent = DaggerAppComponent.builder().build();
+        applicationComponent = DaggerAppComponent.builder().appModule(new AppModule(this)).build();
 
         refWatcher = LeakCanary.install(this);
 
