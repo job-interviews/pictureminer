@@ -1,5 +1,6 @@
 package com.nmp90.pictureminer.api.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Date;
  * Created by joro on 18.12.16.
  */
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Picture {
     private String title, description;
     private String link;
@@ -17,11 +19,26 @@ public class Picture {
 
     private String author;
 
-    public Picture(String title, String description, String link, Date dateTaken, String author) {
-        this.title = title;
-        this.description = description;
-        this.link = link;
-        this.dateTaken = dateTaken;
-        this.author = author;
+    public Picture() {
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getLink() {
+        return link;
+    }
+
+    public Date getDateTaken() {
+        return dateTaken;
+    }
+
+    public String getAuthor() {
+        return author;
     }
 }
