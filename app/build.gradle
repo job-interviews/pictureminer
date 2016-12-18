@@ -2,6 +2,14 @@ apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
 
 android {
+    packagingOptions {
+        // Exclude duplicate files compilation for Jackson
+        // which prevents APK from zipping
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE'
+    }
+
     compileSdkVersion 25
     buildToolsVersion "25.0.1"
     defaultConfig {
