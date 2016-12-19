@@ -1,4 +1,4 @@
-# pictureminer
+# Flickr Picture Miner
 
 Yet another Android Flickr gallery. This task was asked to be made for a job interview.
 
