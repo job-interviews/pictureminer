@@ -1,3 +1,5 @@
+![Picture Miner icon](http://vignette2.wikia.nocookie.net/fantasy-life/images/0/0c/Miner_Transparent.png/revision/latest?cb=20140923201356)
+
 # Flickr Picture Miner
 
 Yet another Android Flickr gallery. This task was asked to be made for a job interview.
