@@ -10,6 +10,10 @@ public class Media {
     @JsonProperty("m")
     private String link;
 
+    public Media() {
+        
+    }
+
     public Media(String link) {
         this.link = link;
     }
